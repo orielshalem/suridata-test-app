@@ -56,7 +56,7 @@ const BlogPosts = () => {
 
     useEffect(() => {
         translatePosts()
-    }, [lng])
+    }, [lng, posts])
 
 
     const translatePosts = async () => {
@@ -76,13 +76,41 @@ const BlogPosts = () => {
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = filteredPosts?.slice(indexOfFirstPost, indexOfLastPost);
 
+
+    function sliceArrayById(arr, id) {
+        const index = arr.findIndex(item => item.id === id);
+        if (index === -1) {
+            return [arr, []];
+        }
+
+        const firstPart = arr.slice(0, index);
+        const secondPart = arr.slice(index + 1);
+
+        return [firstPart, secondPart];
+    }
+
+
+    const onRate = (post, diff) => {
+        const [firstPart, secondPart] = sliceArrayById(posts, post.id).filter(({ id }) => post.id !== id)
+        const isLiked = diff > 0
+        const currLikeCount = post.rating?.likeCount || 0
+        const currDislikeCount = post.rating?.dislikeCount || 0
+        const newPost = {
+            ...post, rating: {
+                likeCount: isLiked ? currLikeCount + 1 : currLikeCount,
+                dislikeCount: !isLiked ? currDislikeCount + 1 : currDislikeCount
+            }
+        }
+        setPosts([...firstPart, newPost, ...secondPart])
+    }
+
     return (
         <div>
             <h1>Blog Posts</h1>
             <BlogPostFilter onFilterChange={handleFilterChange} />
             <LanguageSelector handleLanguageChange={handleLanguageChange} />
             {currentPosts.map((post) =>
-                <BlogPost key={post.id} post={post} />
+                <BlogPost key={post.id} post={post} onRate={onRate} />
             )}
             <Pagination
                 currentPage={currentPage}

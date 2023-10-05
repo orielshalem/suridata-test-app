@@ -3,18 +3,8 @@ import './BlogPost.css'
 import { AiFillLike, AiFillDislike } from 'react-icons/ai';
 
 
-const BlogPost = ({ post }) => {
-    const { title, date, body, username } = post
-    const [likes, setLikes] = useState(0);
-    const [dislikes, setDislikes] = useState(0);
-
-    const handleLike = () => {
-        setLikes(likes + 1);
-    };
-
-    const handleDislike = () => {
-        setDislikes(dislikes + 1);
-    };
+const BlogPost = ({ post, onRate }) => {
+    const { title, date, body, username, rating } = post
 
     return (
         <div className="blog-post">
@@ -23,14 +13,14 @@ const BlogPost = ({ post }) => {
             <p className="post-body">{body}</p>
             <p className="post-username">Posted by: {username}</p>
             <div className="like-dislike-buttons">
-                <button onClick={handleLike}>
+                <button onClick={() => onRate(post, 1)}>
                     <AiFillLike />
                 </button>
-                <span>{likes}</span>
-                <button onClick={handleDislike}>
+                <span>{rating?.likeCount || 0}</span>
+                <button onClick={() => onRate(post, -1)}>
                     <AiFillDislike />
                 </button>
-                <span>{dislikes}</span>
+                <span>{rating?.dislikeCount || 0}</span>
             </div>
         </div>
     );
