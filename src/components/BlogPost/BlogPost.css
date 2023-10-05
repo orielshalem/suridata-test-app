@@ -23,3 +23,26 @@
 .post-username {
     color: #333;
 }
+
+.like-dislike-buttons {
+    align-items: center;
+    margin-top: 20px;
+}
+
+.like-dislike-buttons button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.like-dislike-buttons button:hover {
+    background: none;
+}
+
+.like-dislike-buttons span {
+    font-size: 18px;
+    margin-right: 5px;
+}

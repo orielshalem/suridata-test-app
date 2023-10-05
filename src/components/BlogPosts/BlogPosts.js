@@ -21,7 +21,6 @@ const BlogPosts = () => {
         getBlogPosts()
     }, []);
 
-
     const handleFilterChange = (filterText) => {
         setQuery(filterText)
     }
